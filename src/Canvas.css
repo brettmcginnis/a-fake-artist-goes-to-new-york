@@ -1,0 +1,9 @@
+.Painting {
+    border: 1px solid red;
+    height: 80vh;
+}
+
+canvas { 
+    border: 1px solid green;
+    display:block;
+}

@@ -34,7 +34,7 @@ function Canvas() {
     const [lines, setLines] = useState(Array<Line>())
     const [currentLine, setCurrentLine] = useState<Line>({ points: Array<Point>() })
 
-    const getRough = (): RoughCanvas => rough.canvas(canvasRef.current)
+    const getRough = (): RoughCanvas => rough.canvas(canvasRef.current as HTMLCanvasElement)
 
     const getCanvasOffset = (): {left :number, top :number} => {
         const rect = canvasRef?.current?.getBoundingClientRect()

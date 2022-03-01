@@ -12,6 +12,10 @@ interface Line {
 }
 
 function Canvas() {
+    const [height, setHeight] = useState(640)
+    const [width, setWidth] = useState(640)
+    const divRef = useRef(null)
+
     const canvasRef = useRef(null)
 
     const [isMouseDown, setIsMouseDown] = useState(false)
@@ -29,6 +33,14 @@ function Canvas() {
     const [currentLine, setCurrentLine] = useState<Line>({ points: Array<Point>() })
 
     console.log({ lines })
+
+    useEffect(() => {
+        const currentHeight: number = divRef?.current?.clientHeight || 640
+        const calculatedWidth = (currentHeight / 16) * 9
+        console.log({height: currentHeight, width: calculatedWidth})
+        setHeight(currentHeight)
+        setWidth(calculatedWidth)
+    }, [])
 
     useEffect(() => {
         console.log('canvas')
@@ -52,9 +64,7 @@ function Canvas() {
 
     }, [lines, currentLine]) // seperate
 
-    useEffect(() => {        
-        document.addEventListener("touchmove", (e) => {e.preventDefault() }, {passive: false});
-    }, [])
+    useEffect(() => document.addEventListener("touchmove", (e) => { e.preventDefault() }, { passive: false }), [])
 
     const addPoint = (x, y) => {
         if (isMouseDown) {
@@ -63,10 +73,10 @@ function Canvas() {
     }
 
     return (
-        <div className='Painting'>
+        <div className='Painting' ref={divRef}>
             <canvas
-                width={640}
-                height={425}
+                width={width}
+                height={height}
                 ref={canvasRef}
                 onMouseDown={() => setMouseDown()}
                 onMouseUp={() => setMouseUp()}
@@ -75,21 +85,21 @@ function Canvas() {
                     const rect = canvasRef.current.getBoundingClientRect()
 
                     addPoint(e.clientX - rect.left, e.clientY - rect.top)
-                    console.log({x: e.clientX - rect.left, y: e.clientY - rect.top})
+                    console.log({ x: e.clientX - rect.left, y: e.clientY - rect.top })
                 }}
                 onTouchStart={() => setMouseDown()}
                 onTouchEnd={() => setMouseUp()}
                 onTouchMove={(e) => {
-                    console.log({touchCount: e.touches.length, e})
+                    console.log({ touchCount: e.touches.length, e })
                     if (e.touches.length > 0) {
                         const rect = canvasRef.current.getBoundingClientRect()
                         const x = e.touches[0].clientX
                         const y = e.touches[0].clientY
                         // console.log({x,y})
-                        addPoint(x - rect.left, y -rect.top)
+                        addPoint(x - rect.left, y - rect.top)
                     }
                     // const rect = canvasRef.current.getBoundingClientRect();
-                    
+
                 }}
             />
         </div>

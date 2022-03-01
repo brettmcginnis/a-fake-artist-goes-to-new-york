@@ -1,0 +1,7 @@
+.Painting {
+    border: 1px solid red;
+}
+
+canvas { 
+    display:block;
+}
